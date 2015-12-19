@@ -33,11 +33,16 @@ public class MainActivity extends AppCompatActivity {
     Button btnMulti;
 
     Button btnResult;
+    TextView tvResult;
+    private String mStrResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Text View Result
+        tvResult = (TextView) findViewById(R.id.tv_show_result);
 
         //btnSetting = (Button) findViewById(R.id.btn_setting);
         btnBracketLeft = (Button) findViewById(R.id.btn_bracket_left);
@@ -64,14 +69,188 @@ public class MainActivity extends AppCompatActivity {
 
         btnResult = (Button) findViewById(R.id.btn_result);
 
+        mStrResult = "";
 
         btnResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView result = (TextView) findViewById(R.id.tv_show_result);
-                result.setText("Hello world");
+                tvResult.setText(mStrResult);
             }
         });
+
+        btnAllClear.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                mStrResult = "";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mStrResult.length() > 0) {
+                    removeLastChar();
+                    tvResult.setText(mStrResult);
+                }
+            }
+        });
+
+        btnBracketLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult += "(";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnBracketRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +=")";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="0";
+            }
+        });
+
+        btnN1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="1";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="2";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="3";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="4";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="5";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="6";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="7";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="8";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnN9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="9";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnDot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mStrResult.length() > 0)
+                    if (checkCharacter('.')){
+                        mStrResult +=".";
+                        tvResult.setText(mStrResult);
+                    }
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="+";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStrResult +="-";
+                tvResult.setText(mStrResult);
+            }
+        });
+
+        btnMulti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mStrResult.length() > 0)
+                    if (checkCharacter('*')){
+                        mStrResult +="*";
+                        tvResult.setText(mStrResult);
+                    }
+            }
+        });
+
+        btnSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mStrResult.length() > 0)
+                    if (checkCharacter('/')){
+                        mStrResult +="/";
+                        tvResult.setText(mStrResult);
+                    }
+            }
+        });
+    }
+
+    private  void removeLastChar(){
+        mStrResult = mStrResult.substring(0, mStrResult.length()-1);
+    }
+
+    private boolean checkCharacter(char c){
+        if(mStrResult.charAt(mStrResult.length()-1) == c)
+            return false;
+        else
+            return true;
 
     }
 }
