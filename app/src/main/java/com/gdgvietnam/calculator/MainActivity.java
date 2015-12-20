@@ -1,12 +1,20 @@
 package com.gdgvietnam.calculator;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.w3c.dom.Text;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     Button btnSetting;
@@ -35,12 +43,18 @@ public class MainActivity extends AppCompatActivity {
     Button btnResult;
     TextView tvResult;
     private String mStrResult;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mStrResult = new String("");
         //Text View Result
         tvResult = (TextView) findViewById(R.id.tv_show_result);
 
@@ -74,14 +88,13 @@ public class MainActivity extends AppCompatActivity {
         btnResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvResult.setText(mStrResult);
-            }
-        });
+                //tvResult.setText(mStrResult);
+                checkStrResult();
+            }        });
 
-        btnAllClear.setOnClickListener(new View.OnClickListener()
-        {
+        btnAllClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 mStrResult = "";
                 tvResult.setText(mStrResult);
             }
@@ -90,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStrResult.length() > 0) {
+                if (mStrResult.length() > 0) {
                     removeLastChar();
                     tvResult.setText(mStrResult);
                 }
@@ -108,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         btnBracketRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +=")";
+                mStrResult += ")";
                 tvResult.setText(mStrResult);
             }
         });
@@ -116,14 +129,14 @@ public class MainActivity extends AppCompatActivity {
         btnN0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="0";
+                mStrResult += "0";
             }
         });
 
         btnN1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="1";
+                mStrResult += "1";
                 tvResult.setText(mStrResult);
             }
         });
@@ -131,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         btnN2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="2";
+                mStrResult += "2";
                 tvResult.setText(mStrResult);
             }
         });
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         btnN3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="3";
+                mStrResult += "3";
                 tvResult.setText(mStrResult);
             }
         });
@@ -147,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         btnN4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="4";
+                mStrResult += "4";
                 tvResult.setText(mStrResult);
             }
         });
@@ -155,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         btnN5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="5";
+                mStrResult += "5";
                 tvResult.setText(mStrResult);
             }
         });
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         btnN6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="6";
+                mStrResult += "6";
                 tvResult.setText(mStrResult);
             }
         });
@@ -171,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         btnN7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="7";
+                mStrResult += "7";
                 tvResult.setText(mStrResult);
             }
         });
@@ -179,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         btnN8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="8";
+                mStrResult += "8";
                 tvResult.setText(mStrResult);
             }
         });
@@ -187,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         btnN9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="9";
+                mStrResult += "9";
                 tvResult.setText(mStrResult);
             }
         });
@@ -195,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStrResult.length() > 0)
-                    if (checkCharacter('.')){
-                        mStrResult +=".";
+                if (mStrResult.length() > 0)
+                    if (checkCharacter('.')) {
+                        mStrResult += ".";
                         tvResult.setText(mStrResult);
                     }
             }
@@ -206,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="+";
+                mStrResult += "+";
                 tvResult.setText(mStrResult);
             }
         });
@@ -214,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrResult +="-";
+                mStrResult += "-";
                 tvResult.setText(mStrResult);
             }
         });
@@ -222,9 +235,9 @@ public class MainActivity extends AppCompatActivity {
         btnMulti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStrResult.length() > 0)
-                    if (checkCharacter('*')){
-                        mStrResult +="*";
+                if (mStrResult.length() > 0)
+                    if (checkCharacter('*')) {
+                        mStrResult += "*";
                         tvResult.setText(mStrResult);
                     }
             }
@@ -233,24 +246,85 @@ public class MainActivity extends AppCompatActivity {
         btnSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mStrResult.length() > 0)
-                    if (checkCharacter('/')){
-                        mStrResult +="/";
+                if (mStrResult.length() > 0)
+                    if (checkCharacter('/')) {
+                        mStrResult += "/";
                         tvResult.setText(mStrResult);
                     }
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private  void removeLastChar(){
-        mStrResult = mStrResult.substring(0, mStrResult.length()-1);
+    public void checkStrResult() {
+        //String[] tokens = mStrResult.replaceAll("\\s+", "").split("(?<=[-+*/()])|(?=[-+*/()])");
+        //String expRegString = "\\d+(\\.\\d+)*|\\(\\d+(\\.\\d+)*[\\+\\-\\*\\/]\\d+(\\.\\d+)*\\)";
+        Pattern expPattern = Pattern.compile("((\\d*\\.\\d+)|(\\d+)|([\\+\\-\\*/\\(\\)]))");
+        //Pattern expPattern = Pattern.compile(expRegString);
+        mStrResult = mStrResult.replaceAll("\u0000","");
+        Matcher matcher = expPattern.matcher(mStrResult);
+        if(matcher.find())
+            getTheResult(matcher.toString());
+            tvResult.setText(matcher.group(1));
     }
 
-    private boolean checkCharacter(char c){
-        if(mStrResult.charAt(mStrResult.length()-1) == c)
+    private void getTheResult(String strMatcher){
+        int i = 0;
+        while (i < strMatcher.length()) {
+            
+        }
+    }
+    private void removeLastChar() {
+        mStrResult = mStrResult.substring(0, mStrResult.length() - 1);
+    }
+
+    private boolean checkCharacter(char c) {
+        if (mStrResult.charAt(mStrResult.length() - 1) == c)
             return false;
         else
             return true;
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.gdgvietnam.calculator/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.gdgvietnam.calculator/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
