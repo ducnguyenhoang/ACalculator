@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import org.apache.math;
 
 import org.w3c.dom.Text;
 
@@ -270,11 +271,9 @@ public class MainActivity extends AppCompatActivity {
             tvResult.setText(matcher.group(1));
     }
 
+
     private void getTheResult(String strMatcher){
-        int i = 0;
-        while (i < strMatcher.length()) {
-            
-        }
+
     }
     private void removeLastChar() {
         mStrResult = mStrResult.substring(0, mStrResult.length() - 1);
