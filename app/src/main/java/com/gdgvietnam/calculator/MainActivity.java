@@ -3,21 +3,22 @@ package com.gdgvietnam.calculator;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import org.apache.math;
-
 import org.w3c.dom.Text;
-
+import com.gdgvietnam.calculator.Expression;
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+    public class MainActivity extends AppCompatActivity {
     Button btnSetting;
     Button btnBracketLeft;
     Button btnBracketRight;
@@ -43,19 +44,21 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnResult;
     TextView tvResult;
+        private String mToastWarning;
     private String mStrResult;
+    private Expression mExpression;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mStrResult = new String("");
+        mToastWarning = "Invalid Enter";
         //Text View Result
         tvResult = (TextView) findViewById(R.id.tv_show_result);
 
@@ -260,29 +263,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkStrResult() {
-        //String[] tokens = mStrResult.replaceAll("\\s+", "").split("(?<=[-+*/()])|(?=[-+*/()])");
-        //String expRegString = "\\d+(\\.\\d+)*|\\(\\d+(\\.\\d+)*[\\+\\-\\*\\/]\\d+(\\.\\d+)*\\)";
-        Pattern expPattern = Pattern.compile("((\\d*\\.\\d+)|(\\d+)|([\\+\\-\\*/\\(\\)]))");
-        //Pattern expPattern = Pattern.compile(expRegString);
-        mStrResult = mStrResult.replaceAll("\u0000","");
+        BigDecimal bigDecimalResult = null;
+        Pattern expPattern = Pattern.compile("((\\d*\\.\\d+)*([\\+\\-\\*/\\(\\)]))");
+        //mStrResult = mStrResult.replaceAll("\u0000","");
         Matcher matcher = expPattern.matcher(mStrResult);
-        if(matcher.find())
-            getTheResult(matcher.toString());
-            tvResult.setText(matcher.group(1));
+        if(matcher.find()) {
+            mExpression = new Expression(mStrResult);
+            bigDecimalResult = mExpression.eval();
+            tvResult.setText(bigDecimalResult.toString());
+            mStrResult = "";
+        } else {
+            showToast(mToastWarning);
+        }
+    }
+    /**
+     * Show toast
+    */
+    protected void showToast(String toastMessage){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                toastMessage,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER,0,0);
+        ViewGroup group = (ViewGroup) toast.getView();
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setTextSize(25);
+        toast.show();
     }
 
-
-    private void getTheResult(String strMatcher){
-
-    }
     private void removeLastChar() {
         mStrResult = mStrResult.substring(0, mStrResult.length() - 1);
     }
 
     private boolean checkCharacter(char c) {
-        if (mStrResult.charAt(mStrResult.length() - 1) == c)
+        if (mStrResult.charAt(mStrResult.length() - 1) == c) {
+            tvResult.setTextSize(tvResult.getTextSize()-1);
             return false;
-        else
+        }else
             return true;
 
     }

@@ -24,6 +24,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-    compile files('/Users/ducnguyen/Relia/ACalculator/libraries/libs/commons-math3-3.5/commons-math3-3.5.jar')
-    compile files('/Users/ducnguyen/Relia/ACalculator/libraries/libs/commons-math3-3.5/commons-math3-3.5-javadoc.jar')
 }
